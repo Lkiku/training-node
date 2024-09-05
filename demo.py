@@ -1,10 +1,12 @@
 import os
+os.environ["WANDB_PROJECT"] = "Flock_task_12"
 from dataclasses import dataclass
 
 import torch
 from peft import LoraConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from trl import SFTTrainer, SFTConfig
+import wandb
 
 from dataset import SFTDataCollator, SFTDataset
 from merge import merge_lora_to_base_model
@@ -47,9 +49,12 @@ def train_lora(
         per_device_train_batch_size=training_args.per_device_train_batch_size,
         gradient_accumulation_steps=training_args.gradient_accumulation_steps,
         warmup_steps=100,
-        learning_rate=2e-4,
+        learning_rate=1e-4,
+        lr_scheduler_type="cosine",
         bf16=True,
         logging_steps=20,
+        report_to="wandb",
+        run_name=model_id,
         output_dir="outputs",
         optim="paged_adamw_8bit",
         remove_unused_columns=False,
@@ -93,5 +98,6 @@ def train_lora(
     # remove checkpoint folder
     os.system("rm -rf outputs/checkpoint-*")
 
+    wandb.finish()  # Finalize the WandB run
     # upload lora weights and tokenizer
     print("Training Completed.")
