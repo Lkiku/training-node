@@ -104,7 +104,11 @@ def train_lora(
     trainer.train()
     # Evaluate model
     print("Start to validate the model")
-    trainer.evaluate()
+    try:
+        trainer.evaluate()
+    except Exception as e:
+        print(f"Evaluation failed with error: {e}")
+        print("Continuing with the rest of the process...")
 
     # save model
     trainer.save_model("outputs")
