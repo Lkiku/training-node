@@ -75,25 +75,36 @@ def train_lora(
     )
 
     # Load dataset
-    dataset = SFTDataset(
+    train_dataset = SFTDataset(
         file="demo_data.jsonl",
         tokenizer=tokenizer,
         max_seq_length=context_length,
         template=model2template[model_id],
     )
 
-    validation_dataset = SFTDataset(
+    eval_dataset = SFTDataset(
         file="demo_data.jsonl",
         tokenizer=tokenizer,
         max_seq_length=context_length,
         template=model2template[model_id],
+    )
+
+    # Merge the two datasets
+    combined_data_list = train_dataset.data_list + eval_dataset.data_list
+    # Create a new dataset using the combined data list
+    combined_dataset = SFTDataset(
+        file="demo_data.jsonl",
+        tokenizer=tokenizer,
+        max_seq_length=context_length,
+        template=model2template[model_id],
+        custom_data_list=combined_data_list,
     )
 
     # Define trainer
     trainer = SFTTrainer(
         model=model,
-        train_dataset=dataset,
-        eval_dataset=validation_dataset,
+        train_dataset=combined_dataset,
+        eval_dataset=eval_dataset,
         args=training_args,
         peft_config=lora_config,
         data_collator=SFTDataCollator(tokenizer, max_seq_length=context_length),

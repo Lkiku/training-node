@@ -7,18 +7,22 @@ from torch.utils.data import Dataset
 
 
 class SFTDataset(Dataset):
-    def __init__(self, file, tokenizer, max_seq_length, template):
+    def __init__(self, file, tokenizer, max_seq_length, template, custom_data_list=None):
         self.tokenizer = tokenizer
         self.system_format = template["system_format"]
         self.user_format = template["user_format"]
         self.assistant_format = template["assistant_format"]
-
         self.max_seq_length = max_seq_length
-        logger.info("Loading data: {}".format(file))
-        with open(file, "r", encoding="utf8") as f:
-            data_list = f.readlines()
-        logger.info("There are {} data in dataset".format(len(data_list)))
-        self.data_list = data_list
+        
+        if custom_data_list is not None:
+            logger.info("Using custom data list")
+            self.data_list = custom_data_list
+        else:
+            logger.info("Loading data from file: {}".format(file))
+            with open(file, "r", encoding="utf8") as f:
+                self.data_list = f.readlines()
+        
+        logger.info("There are {} data in dataset".format(len(self.data_list)))
 
     def __len__(self):
         return len(self.data_list)
