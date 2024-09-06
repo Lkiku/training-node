@@ -1,3 +1,6 @@
+/demo_data.jsonl
+/wandb
+run_training_node.sh
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
