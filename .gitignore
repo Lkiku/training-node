@@ -1,4 +1,5 @@
-/demo_data.jsonl
+demo_data.jsonl
+validation.jsonl
 /wandb
 run_training_node.sh
 # Byte-compiled / optimized / DLL files

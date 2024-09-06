@@ -1,5 +1,6 @@
 import os
-os.environ["WANDB_PROJECT"] = "Flock_task_12"
+TASK_ID = os.environ.get("TASK_ID", "10")
+os.environ["WANDB_PROJECT"] = f"Flock_task_{TASK_ID}"
 from dataclasses import dataclass
 
 import torch
@@ -47,6 +48,7 @@ def train_lora(
 
     training_args = SFTConfig(
         per_device_train_batch_size=training_args.per_device_train_batch_size,
+        per_device_eval_batch_size=training_args.per_device_train_batch_size,
         gradient_accumulation_steps=training_args.gradient_accumulation_steps,
         warmup_steps=100,
         learning_rate=1e-4,
@@ -80,17 +82,29 @@ def train_lora(
         template=model2template[model_id],
     )
 
+    validation_dataset = SFTDataset(
+        file="demo_data.jsonl",
+        tokenizer=tokenizer,
+        max_seq_length=context_length,
+        template=model2template[model_id],
+    )
+
     # Define trainer
     trainer = SFTTrainer(
         model=model,
         train_dataset=dataset,
+        eval_dataset=validation_dataset,
         args=training_args,
         peft_config=lora_config,
         data_collator=SFTDataCollator(tokenizer, max_seq_length=context_length),
     )
 
     # Train model
+    print("Start to train the model.")
     trainer.train()
+    # Evaluate model
+    print("Start to validate the model")
+    trainer.evaluate()
 
     # save model
     trainer.save_model("outputs")
