@@ -8,6 +8,7 @@ from peft import LoraConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from trl import SFTTrainer, SFTConfig
 import wandb
+import random
 
 from dataset import SFTDataCollator, SFTDataset
 from merge import merge_lora_to_base_model
@@ -21,7 +22,7 @@ class LoraTrainingArguments:
     num_train_epochs: int
     lora_rank: int
     lora_alpha: int
-    lora_dropout: int
+    lora_dropout: float
 
 
 def train_lora(
@@ -89,8 +90,17 @@ def train_lora(
         template=model2template[model_id],
     )
 
-    # Merge the two datasets
-    combined_data_list = train_dataset.data_list + eval_dataset.data_list
+    additional_dataset = SFTDataset(
+        file="demo_data.jsonl",
+        tokenizer=tokenizer,
+        max_seq_length=context_length,
+        template=model2template[model_id],
+    )
+
+    # Add my own generated dataset
+    additional_data_size = len(additional_dataset.data_list) // 3
+    additional_data_subset = random.sample(additional_dataset.data_list, additional_data_size)
+    combined_data_list = train_dataset.data_list + additional_data_subset
     # Create a new dataset using the combined data list
     combined_dataset = SFTDataset(
         file="demo_data.jsonl",
