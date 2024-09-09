@@ -34,6 +34,10 @@ def train_lora(
         target_modules=[
             "q_proj",
             "v_proj",
+            "k_proj",
+            "down_proj",
+            "up_proj",
+            "gate_proj",
         ],
         lora_alpha=training_args.lora_alpha,
         lora_dropout=training_args.lora_dropout,
@@ -56,6 +60,7 @@ def train_lora(
         lr_scheduler_type="cosine",
         bf16=True,
         logging_steps=20,
+        evaluation_strategy="epoch",
         report_to="wandb",
         run_name=model_id,
         output_dir="outputs",
