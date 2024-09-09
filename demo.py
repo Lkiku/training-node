@@ -60,7 +60,7 @@ def train_lora(
         lr_scheduler_type="cosine",
         bf16=True,
         logging_steps=20,
-        evaluation_strategy="epoch",
+        eval_strategy="epoch",
         report_to="wandb",
         run_name=model_id,
         output_dir="outputs",
@@ -103,7 +103,7 @@ def train_lora(
     )
 
     # Add my own generated dataset
-    additional_data_size = len(additional_dataset.data_list) // 3
+    additional_data_size = len(additional_dataset.data_list) // 4
     additional_data_subset = random.sample(additional_dataset.data_list, additional_data_size)
     combined_data_list = train_dataset.data_list + additional_data_subset
     # Create a new dataset using the combined data list
