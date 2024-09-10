@@ -35,7 +35,7 @@ def train_lora(
             "q_proj",
             "v_proj",
             "k_proj",
-            "p_proj",
+            "o_proj",
             "down_proj",
             "up_proj",
             "gate_proj",
