@@ -61,6 +61,7 @@ def train_lora(
         bf16=True,
         logging_steps=20,
         eval_strategy="epoch",
+        save_strategy="epoch",
         report_to="wandb",
         run_name=model_id,
         output_dir="outputs",
@@ -68,6 +69,8 @@ def train_lora(
         remove_unused_columns=False,
         num_train_epochs=training_args.num_train_epochs,
         max_seq_length=context_length,
+        metric_for_best_model="loss",
+        load_best_model_at_end=True,
     )
     tokenizer = AutoTokenizer.from_pretrained(
         model_id,
