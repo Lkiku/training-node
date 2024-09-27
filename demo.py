@@ -18,6 +18,7 @@ from utils.constants import model2template
 @dataclass
 class LoraTrainingArguments:
     per_device_train_batch_size: int
+    per_device_eval_batch_size: int
     gradient_accumulation_steps: int
     num_train_epochs: int
     lora_rank: int
@@ -39,6 +40,7 @@ def train_lora(
             "down_proj",
             "up_proj",
             "gate_proj",
+            "ffn",
         ],
         lora_alpha=training_args.lora_alpha,
         lora_dropout=training_args.lora_dropout,
@@ -54,10 +56,10 @@ def train_lora(
 
     training_args = SFTConfig(
         per_device_train_batch_size=training_args.per_device_train_batch_size,
-        per_device_eval_batch_size=training_args.per_device_train_batch_size,
+        per_device_eval_batch_size=training_args.per_device_eval_batch_size,
         gradient_accumulation_steps=training_args.gradient_accumulation_steps,
         warmup_steps=100,
-        learning_rate=1e-4,
+        learning_rate=3e-4,
         lr_scheduler_type="cosine",
         bf16=True,
         logging_steps=20,

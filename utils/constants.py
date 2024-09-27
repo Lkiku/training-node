@@ -68,10 +68,18 @@ llama3_template = {
     "system": None,
 }
 
+phi3_template = {
+    "system_format": None,
+    "user_format": "<|user|>\n{content}<|end|>\n<|assistant|>",
+    "assistant_format": "{content}<|end|>\n",
+    "system": None,
+}
+
 
 
 model2template = {
     # Qwen models
+    # qwen1.5
     "Qwen/Qwen1.5-0.5B": qwen_template,
     "Qwen/Qwen1.5-0.5B-Chat": qwen_template,
     "Qwen/Qwen1.5-1.8B": qwen_template,
@@ -86,6 +94,7 @@ model2template = {
     "Qwen/Qwen1.5-32B-Chat": qwen_template,
     "Qwen/Qwen1.5-72B": qwen_template,
     "Qwen/Qwen1.5-72B-Chat": qwen_template,
+    # qwen2
     "Qwen/Qwen2-0.5B": qwen_template,
     "Qwen/Qwen2-0.5B-Instruct": qwen_template,
     "Qwen/Qwen2-1.5B": qwen_template,
@@ -94,6 +103,21 @@ model2template = {
     "Qwen/Qwen2-7B-Instruct": qwen_template,
     "Qwen/Qwen2-72B": qwen_template,
     "Qwen/Qwen2-72B-Instruct": qwen_template,
+    # qwen2.5
+    "Qwen/Qwen2.5-0.5B": qwen_template,
+    "Qwen/Qwen2.5-0.5B-Instruct": qwen_template,
+    "Qwen/Qwen2.5-1.5B": qwen_template,
+    "Qwen/Qwen2.5-1.5B-Instruct": qwen_template,
+    "Qwen/Qwen2.5-3B": qwen_template,
+    "Qwen/Qwen2.5-3B-Instruct": qwen_template,
+    "Qwen/Qwen2.5-7B": qwen_template,
+    "Qwen/Qwen2.5-7B-Instruct": qwen_template,
+    "Qwen/Qwen2.5-14B": qwen_template,
+    "Qwen/Qwen2.5-14B-Instruct": qwen_template,
+    "Qwen/Qwen2.5-32B": qwen_template,
+    "Qwen/Qwen2.5-32B-Instruct": qwen_template,
+    "Qwen/Qwen2.5-72B": qwen_template,
+    "Qwen/Qwen2.5-72B-Instruct": qwen_template,
     # Yi models
     "01-ai/Yi-6B": yi_template,
     "01-ai/Yi-6B-Chat": yi_template,
@@ -121,6 +145,13 @@ model2template = {
     "google/gemma-7b": gemma_template,
     "google/gemma-2b-it": gemma_template,
     "google/gemma-7b-it": gemma_template,
+    # Gemma2 models
+    "google/gemma-2-2b": gemma_template,
+    "google/gemma-2-9b": gemma_template,
+    "google/gemma-2-27b": gemma_template,
+    "google/gemma-2-2b-it": gemma_template,
+    "google/gemma-2-9b-it": gemma_template,
+    "google/gemma-2-27b-it": gemma_template,
     # Zephyr models
     "HuggingFaceH4/zephyr-7b-alpha": zephyr_template,
     "HuggingFaceH4/zephyr-7b-beta": zephyr_template,
@@ -136,6 +167,16 @@ model2template = {
     "meta-llama/Meta-Llama-3-8B-Instruct": llama3_template,
     "meta-llama/Meta-Llama-3-70B": llama3_template,
     "meta-llama/Meta-Llama-3-70B-Instruct": llama3_template,
+    # llama3.1
+    "meta-llama/Meta-Llama-3.1-8B": llama3_template,
+    "meta-llama/Meta-Llama-3.1-8B-Instruct": llama3_template,
+    "meta-llama/Meta-Llama-3.1-70B": llama3_template,
+    "meta-llama/Meta-Llama-3.1-70B-Instruct": llama3_template,
+    # phi3
+    "microsoft/Phi-3.5-mini-instruct": phi3_template,
+    "microsoft/Phi-3-mini-4k-instruct": phi3_template,
+    "microsoft/Phi-3-small-8k-instruct": phi3_template,
+    "microsoft/Phi-3-medium-4k-instruct": phi3_template,
 }
 
 model2size = {
@@ -154,6 +195,7 @@ model2size = {
     "Qwen/Qwen1.5-32B-Chat": 32_000_000_000,
     "Qwen/Qwen1.5-72B": 72_000_000_000,
     "Qwen/Qwen1.5-72B-Chat": 72_000_000_000,
+    # qwen2
     "Qwen/Qwen2-0.5B": 620_000_000,
     "Qwen/Qwen2-0.5B-Instruct": 620_000_000,
     "Qwen/Qwen2-1.5B": 1_840_000_000,
@@ -162,6 +204,21 @@ model2size = {
     "Qwen/Qwen2-7B-Instruct": 7_720_000_000,
     "Qwen/Qwen2-72B": 72_000_000_000,
     "Qwen/Qwen2-72B-Instruct": 72_000_000_000,
+    # qwen2.5
+    "Qwen/Qwen2.5-0.5B": 620_000_000,
+    "Qwen/Qwen2.5-0.5B-Instruct": 620_000_000,
+    "Qwen/Qwen2.5-1.5B": 1_840_000_000,
+    "Qwen/Qwen2.5-1.5B-Instruct": 1_840_000_000,
+    "Qwen/Qwen2.5-3B": 2_900_000_000,
+    "Qwen/Qwen2.5-3B-Instruct": 2_900_000_000,
+    "Qwen/Qwen2.5-7B": 7_720_000_000,
+    "Qwen/Qwen2.5-7B-Instruct": 7_720_000_000,
+    "Qwen/Qwen2.5-14B": 14_000_000_000,
+    "Qwen/Qwen2.5-14B-Instruct": 14_000_000_000,
+    "Qwen/Qwen2.5-32B": 32_000_000_000,
+    "Qwen/Qwen2.5-32B-Instruct": 32_000_000_000,
+    "Qwen/Qwen2.5-72B": 72_000_000_000,
+    "Qwen/Qwen2.5-72B-Instruct": 72_000_000_000,
     # Yi models (estimated sizes)
     "01-ai/Yi-6B": 6_000_000_000,
     "01-ai/Yi-6B-Chat": 6_000_000_000,
@@ -189,6 +246,13 @@ model2size = {
     "google/gemma-7b": 8_540_000_000,
     "google/gemma-2b-it": 2_510_000_000,
     "google/gemma-7b-it": 8_540_000_000,
+    # Gemma2 models
+    "google/gemma-2-2b": 2_510_000_000,
+    "google/gemma-2-9b": 8_540_000_000,
+    "google/gemma-2-27b": 27_000_000_000,
+    "google/gemma-2-2b-it": 2_510_000_000,
+    "google/gemma-2-9b-it": 8_540_000_000,
+    "google/gemma-2-27b-it": 27_000_000_000,
     # Zephyr models (estimated size)
     "HuggingFaceH4/zephyr-7b-alpha": 7_000_000_000,
     "HuggingFaceH4/zephyr-7b-beta": 7_000_000_000,
@@ -204,6 +268,16 @@ model2size = {
     "meta-llama/Meta-Llama-3-8B-Instruct": 8_000_000_000,
     "meta-llama/Meta-Llama-3-70B": 70_000_000_000,
     "meta-llama/Meta-Llama-3-70B-Instruct": 70_000_000_000,
+    # llama3.1
+    "meta-llama/Meta-Llama-3.1-8B": 8_000_000_000,
+    "meta-llama/Meta-Llama-3.1-8B-Instruct": 8_000_000_000,
+    "meta-llama/Meta-Llama-3.1-70B": 70_000_000_000,
+    "meta-llama/Meta-Llama-3.1-70B-Instruct": 70_000_000_000,
+    # phi3
+    "microsoft/Phi-3.5-mini-instruct": 2_510_000_000,
+    "microsoft/Phi-3-mini-4k-instruct": 2_510_000_000,
+    "microsoft/Phi-3-small-8k-instruct": 2_510_000_000,
+    "microsoft/Phi-3-medium-4k-instruct": 2_510_000_000,
 }
 
 model2base_model = {
@@ -230,6 +304,21 @@ model2base_model = {
     "Qwen/Qwen2-7B-Instruct": "qwen1.5",
     "Qwen/Qwen2-72B": "qwen1.5",
     "Qwen/Qwen2-72B-Instruct": "qwen1.5",
+    # qwen2.5
+    "Qwen/Qwen2.5-0.5B": "qwen1.5",
+    "Qwen/Qwen2.5-0.5B-Instruct": "qwen1.5",
+    "Qwen/Qwen2.5-1.5B": "qwen1.5",
+    "Qwen/Qwen2.5-1.5B-Instruct": "qwen1.5",
+    "Qwen/Qwen2.5-3B": "qwen1.5",
+    "Qwen/Qwen2.5-3B-Instruct": "qwen1.5",
+    "Qwen/Qwen2.5-7B": "qwen1.5",
+    "Qwen/Qwen2.5-7B-Instruct": "qwen1.5",
+    "Qwen/Qwen2.5-14B": "qwen1.5",
+    "Qwen/Qwen2.5-14B-Instruct": "qwen1.5",
+    "Qwen/Qwen2.5-32B": "qwen1.5",
+    "Qwen/Qwen2.5-32B-Instruct": "qwen1.5",
+    "Qwen/Qwen2.5-72B": "qwen1.5",
+    "Qwen/Qwen2.5-72B-Instruct": "qwen1.5",
     # Yi models
     "01-ai/Yi-6B": "yi",
     "01-ai/Yi-6B-Chat": "yi",
@@ -257,6 +346,12 @@ model2base_model = {
     "google/gemma-7b": "gemma",
     "google/gemma-2b-it": "gemma",
     "google/gemma-7b-it": "gemma",
+    "google/gemma-2-2b": "gemma",
+    "google/gemma-2-9b": "gemma",
+    "google/gemma-2-27b": "gemma",
+    "google/gemma-2-2b-it": "gemma",
+    "google/gemma-2-9b-it": "gemma",
+    "google/gemma-2-27b-it": "gemma",
     # Zephyr models
     "HuggingFaceH4/zephyr-7b-alpha": "zephyr",
     "HuggingFaceH4/zephyr-7b-beta": "zephyr",
@@ -272,4 +367,14 @@ model2base_model = {
     "meta-llama/Meta-Llama-3-8B-Instruct": "llama3",
     "meta-llama/Meta-Llama-3-70B": "llama3",
     "meta-llama/Meta-Llama-3-70B-Instruct": "llama3",
+    # llama3.1
+    "meta-llama/Meta-Llama-3.1-8B": "llama3",
+    "meta-llama/Meta-Llama-3.1-8B-Instruct": "llama3",
+    "meta-llama/Meta-Llama-3.1-70B": "llama3",
+    "meta-llama/Meta-Llama-3.1-70B-Instruct": "llama3",
+    # phi3
+    "microsoft/Phi-3.5-mini-instruct": "phi3",
+    "microsoft/Phi-3-mini-4k-instruct": "phi3",
+    "microsoft/Phi-3-small-8k-instruct": "phi3",
+    "microsoft/Phi-3-medium-4k-instruct": "phi3",
 }
