@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import subprocess
 
 import requests
 import yaml
@@ -60,6 +61,7 @@ if __name__ == "__main__":
         try:
             logger.info("Start to push the lora weight to the hub...")
             api = HfApi(token=os.environ["HF_TOKEN"])
+            # api = HfApi(endpoint=os.environ["HF_ENDPOINT"], token=os.environ["HF_TOKEN"])
             api.create_repo(
                 f"{HF_USERNAME}/{hg_repo_id}",
                 repo_type="model",
@@ -69,6 +71,7 @@ if __name__ == "__main__":
                 repo_id=f"{HF_USERNAME}/{hg_repo_id}",
                 repo_type="model",
             )
+            # subprocess.run(["huggingface-cli", "upload", f"{HF_USERNAME}/{hg_repo_id}", "./outputs/"])
             # submit
             submit_task(
                 task_id, f"{HF_USERNAME}/{hg_repo_id}", model2base_model[model_id]
