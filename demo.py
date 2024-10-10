@@ -95,7 +95,7 @@ def train_lora(
     )
 
     eval_dataset = SFTDataset(
-        file="demo_data.jsonl",
+        file="validation.jsonl",
         tokenizer=tokenizer,
         max_seq_length=context_length,
         template=model2template[model_id],
@@ -109,7 +109,7 @@ def train_lora(
     )
 
     # Add my own generated dataset
-    additional_data_size = len(additional_dataset.data_list) // 4
+    additional_data_size = len(additional_dataset.data_list) // 100
     additional_data_subset = random.sample(additional_dataset.data_list, additional_data_size)
     combined_data_list = train_dataset.data_list + additional_data_subset
     # Create a new dataset using the combined data list

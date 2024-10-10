@@ -2,6 +2,8 @@ import json
 import os
 import time
 import subprocess
+import ssl
+import requests.exceptions
 
 import requests
 import yaml
@@ -11,8 +13,32 @@ from huggingface_hub import HfApi
 from demo import LoraTrainingArguments, train_lora
 from utils.constants import model2base_model, model2size
 from utils.flock_api import get_task, submit_task
+from utils.gpu_utils import get_gpu_type
+
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 HF_USERNAME = os.environ["HF_USERNAME"]
+os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"
+
+@retry(
+    stop=stop_after_attempt(5),
+    wait=wait_exponential(multiplier=1, min=4, max=60),
+    retry=(
+        retry_if_exception_type(ssl.SSLError) |
+        retry_if_exception_type(requests.exceptions.RequestException)
+    )
+)
+def upload_folder_with_retry(api, folder_path, repo_name, repo_type):
+    try:
+        commit_message = api.upload_folder(
+            folder_path=folder_path,
+            repo_id=repo_name,
+            repo_type=repo_type,
+        )
+        return commit_message
+    except Exception as e:
+        logger.error(f"Error during folder upload: {e}")
+        raise
 
 if __name__ == "__main__":
     task_id = os.environ["TASK_ID"]
@@ -55,26 +81,39 @@ if __name__ == "__main__":
             logger.info("Proceed to the next model...")
             continue
 
-        # generate a random repo id based on timestamp
-        hg_repo_id = f"{model_id.replace('/', '-')}-" + str(int(time.time()))
+        gpu_type = get_gpu_type()
 
         try:
             logger.info("Start to push the lora weight to the hub...")
-            api = HfApi(token=os.environ["HF_TOKEN"])
-            # api = HfApi(endpoint=os.environ["HF_ENDPOINT"], token=os.environ["HF_TOKEN"])
-            api.create_repo(
-                f"{HF_USERNAME}/{hg_repo_id}",
-                repo_type="model",
-            )
-            api.upload_folder(
+            api = HfApi(endpoint=os.environ["HF_ENDPOINT"], token=os.environ["HF_TOKEN"])
+            repo_name = f"{HF_USERNAME}/task-{task_id}-{model_id.replace('/', '-')}"
+            # check whether the repo exists
+            try:
+                api.create_repo(
+                    repo_name,
+                    exist_ok=False,
+                    repo_type="model",
+                )
+            except Exception as e:
+                logger.info(
+                    f"Repo {repo_name} already exists. Will commit the new version."
+                )
+
+            commit_message = upload_folder_with_retry(
+                api,
                 folder_path="outputs",
-                repo_id=f"{HF_USERNAME}/{hg_repo_id}",
+                repo_name=repo_name,
                 repo_type="model",
             )
-            # subprocess.run(["huggingface-cli", "upload", f"{HF_USERNAME}/{hg_repo_id}", "./outputs/"])
+            # get commit hash
+            commit_hash = commit_message.oid
+            logger.info(f"Commit hash: {commit_hash}")
+            logger.info(f"Repo name: {repo_name}")
+            logger.info("Lora weights pushed to the hub successfully")
+
             # submit
             submit_task(
-                task_id, f"{HF_USERNAME}/{hg_repo_id}", model2base_model[model_id]
+                task_id, repo_name, model2base_model[model_id], gpu_type, commit_hash
             )
             logger.info("Task submitted successfully")
         except Exception as e:

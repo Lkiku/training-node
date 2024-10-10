@@ -1,80 +1,17 @@
-01-ai/Yi-1.5-9B:
-  per_device_train_batch_size: 1
+microsoft/Phi-3.5-mini-instruct:
+  per_device_train_batch_size: 4
   per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 8
-  num_train_epochs: 4
+  gradient_accumulation_steps: 4
+  num_train_epochs: 6
   lora_rank: 8
   lora_alpha: 32
-  lora_dropout: 0.1
+  lora_dropout: 0.2
 
-01-ai/Yi-1.5-9B-Chat:
-  per_device_train_batch_size: 1
+Qwen/Qwen2.5-3B:
+  per_device_train_batch_size: 4
   per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 8
-  num_train_epochs: 8
-  lora_rank: 128
-  lora_alpha: 256
-  lora_dropout: 0.1
-
-meta-llama/Meta-Llama-3-8B:
-  per_device_train_batch_size: 1
-  per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 8
-  num_train_epochs: 8
-  lora_rank: 128
-  lora_alpha: 256
-  lora_dropout: 0.1
-
-meta-llama/Meta-Llama-3-8B-Instruct:
-  per_device_train_batch_size: 1
-  per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 8
-  num_train_epochs: 8
-  lora_rank: 128
-  lora_alpha: 256
-  lora_dropout: 0.1
-
-Qwen/Qwen2-1.5B-Instruct:
-  per_device_train_batch_size: 2
-  per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 8
-  num_train_epochs: 10
-  lora_rank: 128
-  lora_alpha: 256
-  lora_dropout: 0.1
-
-Qwen/Qwen1.5-1.8B-Chat:
-  per_device_train_batch_size: 1
-  per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 8
-  num_train_epochs: 10
-  lora_rank: 128
-  lora_alpha: 256
-  lora_dropout: 0.1
-
-google/gemma-2b-it:
-  per_device_train_batch_size: 2
-  per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 8
-  num_train_epochs: 10
-  lora_rank: 16
+  gradient_accumulation_steps: 4
+  num_train_epochs: 6
+  lora_rank: 8
   lora_alpha: 32
-  lora_dropout: 0.1
-
-google/gemma-2b:
-  per_device_train_batch_size: 2
-  per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 8
-  num_train_epochs: 10
-  lora_rank: 16
-  lora_alpha: 32
-  lora_dropout: 0.1
-
-Qwen/Qwen1.5-1.8B:
-  per_device_train_batch_size: 2
-  per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 8
-  num_train_epochs: 10
-  lora_rank: 16
-  lora_alpha: 32
-  lora_dropout: 0.1
+  lora_dropout: 0.2
