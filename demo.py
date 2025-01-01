@@ -88,21 +88,21 @@ def train_lora(
 
     # Load dataset
     train_dataset = SFTDataset(
-        file="demo_data.jsonl",
+        file="data/demo_data.jsonl",
         tokenizer=tokenizer,
         max_seq_length=context_length,
         template=model2template[model_id],
     )
 
     eval_dataset = SFTDataset(
-        file="validation.jsonl",
+        file="data/demo_data.jsonl",
         tokenizer=tokenizer,
         max_seq_length=context_length,
         template=model2template[model_id],
     )
 
     additional_dataset = SFTDataset(
-        file="demo_data.jsonl",
+        file="data/demo_data.jsonl",
         tokenizer=tokenizer,
         max_seq_length=context_length,
         template=model2template[model_id],
@@ -114,7 +114,7 @@ def train_lora(
     combined_data_list = train_dataset.data_list + additional_data_subset
     # Create a new dataset using the combined data list
     combined_dataset = SFTDataset(
-        file="demo_data.jsonl",
+        file="data/demo_data.jsonl",
         tokenizer=tokenizer,
         max_seq_length=context_length,
         template=model2template[model_id],
@@ -151,3 +151,24 @@ def train_lora(
     wandb.finish()  # Finalize the WandB run
     # upload lora weights and tokenizer
     print("Training Completed.")
+
+if __name__ == "__main__":
+    
+    # Define training arguments for LoRA fine-tuning
+    training_args = LoraTrainingArguments(
+        num_train_epochs=3,
+        per_device_train_batch_size=2,
+        gradient_accumulation_steps=2,
+        lora_rank=8,
+        lora_alpha=16,
+        lora_dropout=0.05,
+    )
+    # Set model ID and context length
+    model_id = "Qwen/Qwen1.5-0.5B"
+    context_length = 2048
+    # Start LoRA fine-tuning
+    train_lora(
+        model_id=model_id,
+        context_length=context_length, 
+        training_args=training_args
+    )
