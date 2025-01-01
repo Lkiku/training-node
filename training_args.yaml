@@ -1,19 +1,9 @@
-microsoft/Phi-3-mini-4k-instruct:
+google/gemma-2-2b:
   per_device_train_batch_size: 4
   per_device_eval_batch_size: 1
   gradient_accumulation_steps: 4
   num_train_epochs: 6
-  lora_rank: 128
-  lora_alpha: 256
-  lora_dropout: 0.05
-
-
-microsoft/Phi-3.5-mini-instruct:
-  per_device_train_batch_size: 4
-  per_device_eval_batch_size: 1
-  gradient_accumulation_steps: 4
-  num_train_epochs: 6
-  lora_rank: 128
-  lora_alpha: 256
+  lora_rank: 8
+  lora_alpha: 32
   lora_dropout: 0.1
   
