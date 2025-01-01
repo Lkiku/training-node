@@ -11,7 +11,6 @@ import wandb
 import random
 
 from dataset import SFTDataCollator, SFTDataset
-from merge import merge_lora_to_base_model
 from utils.constants import model2template
 
 
