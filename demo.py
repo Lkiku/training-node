@@ -32,14 +32,10 @@ def train_lora(
     lora_config = LoraConfig(
         r=training_args.lora_rank,
         target_modules=[
-            "q_proj",
-            "v_proj",
-            "k_proj",
-            "o_proj",
+            "gate_up_proj",
             "down_proj",
-            "up_proj",
-            "gate_proj",
-            "ffn",
+            "qkv_proj",
+            "o_proj",
         ],
         lora_alpha=training_args.lora_alpha,
         lora_dropout=training_args.lora_dropout,
@@ -107,10 +103,17 @@ def train_lora(
         template=model2template[model_id],
     )
 
+    additional_dataset2 = SFTDataset(
+        file="data/generated_data.jsonl",
+        tokenizer=tokenizer,
+        max_seq_length=context_length,
+        template=model2template[model_id],
+    )
+
     # Add my own generated dataset
-    additional_data_size = len(additional_dataset.data_list) // 100
+    additional_data_size = int(len(additional_dataset.data_list) * 1.0)
     additional_data_subset = random.sample(additional_dataset.data_list, additional_data_size)
-    combined_data_list = train_dataset.data_list + additional_data_subset
+    combined_data_list = train_dataset.data_list + additional_data_subset + additional_dataset2.data_list
     # Create a new dataset using the combined data list
     combined_dataset = SFTDataset(
         file="data/demo_data.jsonl",
@@ -136,7 +139,8 @@ def train_lora(
     # Evaluate model
     print("Start to validate the model")
     try:
-        trainer.evaluate()
+        eval_result = trainer.evaluate()
+        print("evaluate result is %s" % str(eval_result))
     except Exception as e:
         print(f"Evaluation failed with error: {e}")
         print("Continuing with the rest of the process...")

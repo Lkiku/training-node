@@ -116,11 +116,14 @@ if __name__ == "__main__":
                 task_id, repo_name, model2base_model[model_id], gpu_type, commit_hash
             )
             logger.info("Task submitted successfully")
-        except Exception as e:
-            logger.error(f"Error: {e}")
-            logger.info("Proceed to the next model...")
-        finally:
-            # cleanup merged_model and output
+            
+            # Only cleanup after successful upload and submission
+            logger.info("Cleaning up files...")
             os.system("rm -rf merged_model")
             os.system("rm -rf outputs")
+            
+        except Exception as e:
+            logger.error(f"Error during upload or submission: {e}")
+            logger.info("Files are preserved for debugging or retry.")
+        finally:
             continue
