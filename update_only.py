@@ -10,10 +10,8 @@ import yaml
 from loguru import logger
 from huggingface_hub import HfApi
 
-from demo import LoraTrainingArguments, train_lora
 from utils.constants import model2base_model, model2size
 from utils.flock_api import get_task, submit_task
-from utils.gpu_utils import get_gpu_type
 
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
@@ -70,10 +68,10 @@ if __name__ == "__main__":
     for model_id in all_training_args.keys():
         logger.info(f"Start to update the model {model_id}...")
         
-        gpu_type = get_gpu_type()
+        gpu_type = "NVIDIA GeForce RTX 4090"
         try:
             logger.info("Start to push the lora weight to the hub...")
-            api = HfApi(endpoint=os.environ["HF_ENDPOINT"], token=os.environ["HF_TOKEN"])
+            api = HfApi(token=os.environ["HF_TOKEN"])
             repo_name = f"{HF_USERNAME}/task-{task_id}-{model_id.replace('/', '-')}"
             # check whether the repo exists
             try:
